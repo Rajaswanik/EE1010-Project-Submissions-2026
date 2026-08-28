@@ -1,0 +1,6 @@
+The following REFERNCES were used for building the digital clock 
+1.https://github.com/Dhawal24112006/projects/blob/main/clock%2Fmain.pdf found this pdf on digital clock by our senior in github for building of the clock
+2. For code we used gvv sirs code ie https://github.com/gadepall/clock/blob/main/codes/code.cpp and gemini ai to understand the code and functions as well as kmaps
+3.For learning latex gemini ai was used
+4.For making and working section of the documentation gemini was used as a reference mainly due to time constraint remaining section was mostly done by us
+
