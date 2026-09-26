@@ -1,0 +1,56 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{amsmath, amssymb}
+\usepackage{float}
+
+\title{Mobile Charger: Progress Log}
+\author{B.Tarun Tej \& B.Rajaswanik}
+\date{19-09-2026}
+\begin{document}
+	\maketitle
+	\section{19-09-2026}
+	We resarched about the charger and found how can we make it from Claude Gemini etc and simulated the circuit in tinkered ai
+	we learned how does the full wave rectifier works\newline i.e A bridge rectifier is a full-wave rectifying circuit that uses four diodes arranged in a closed-loop bridge network to convert alternating current (AC) into pulsating direct current (DC). During the positive half-cycle of the AC input voltage, two diagonally opposite diodes become forward-biased and conduct electricity, allowing current to flow through the load resistor in a specific direction while the other two diodes remain off. When the AC voltage reverses polarity during the negative half-cycle, the remaining two diodes switch on and conduct, while the first pair turns off. Crucially, these diodes route the reverse current through the exact same load resistor in the same uniform direction as before. Because both halves of the AC waveform are utilized continuously without discarding energy or requiring a specialized center-tapped transformer, the bridge rectifier delivers a high theoretical efficiency of 81.2\% and produces an output ripple frequency equal to twice the input AC frequency.We also learned about the transformer
+	\section{20-09-2026}
+	We first started with soldering input and output wires to the transformer as the one given to us do not have them.We started soldering the circuit we initially didn't know about the filter capacitor and how it works so we just used and 100 micro farad capacitor and soldered every thing to the perf board and checked the  reading with multimeter we got 5v dc output voltage with 17v rectified dc input and 230v initial transformer input and 12v of of transformer output when we connect the phone it was showing charging and the digits after the decimal point was increasing.
+	\section{21-09-2026}
+	we started learning free-cad bit by bit from you tube took measurements of the transformer and perf board  tried to do it bit by bit
+	\section{22-09-2026}
+	We noticed that for how ever long we plug in the phone to our mobile charger it wont get charged it is only getting charged maximum of 0.99 and wont increase to the next number so it was obvious phone was rejecting the charge given by the charger we searched why it might be happening there was 3 possibilities \newline 1.D+ and D- pins not shorted in the USB causing 5v not to flow according to USB protocols set by Intel IBM etc\newline 2.Ripple voltage exceeding the limit so the phone is rejecting the charge\newline 3.the phone not allowing external charger charging so we need to use Arduino to bypass the protocols and allow it to charge
+	\section{23-09-2026}
+	We learnt about the ripple voltage as we thought that was more obvious problem because obviously there was not enough capacitance to filter Here is what we learned:\newline Capacitor filtering in a full-wave rectifier circuit converts pulsating direct current (DC) into a smooth DC output. A high-capacitance filter capacitor connected in parallel with the load charges rapidly toward the peak input voltage ($V_p$) during each half-cycle. As the input voltage drops past its peak, the rectifier diodes become reverse-biased because the capacitor holds a higher voltage than the incoming supply. During this phase, the capacitor slowly releases its stored energy into the load, maintaining continuous current flow between supply peaks.
+	
+	This repetitive cycle of charging during supply peaks and discharging between half-cycles produces an output voltage with a small AC variation known as peak-to-peak ripple voltage ($V_{r(pp)}$). Because a full-wave rectifier pulses at twice the AC line frequency ($2f$), the discharge duration is halved, significantly reducing the voltage droop between conduction peaks. The magnitude of this ripple voltage is approximated by:
+	\[
+	V_{r(pp)} \approx \frac{I_L}{2 f C}
+	\]
+	where $I_L$ represents the load current, $f$ is the AC supply frequency, and $C$ is the filter capacitance. Increasing the capacitance or operating at a higher line frequency reduces the peak-to-peak ripple voltage, producing a steady DC output across the load.
+	\newpage \begin{figure}[htbp]
+		\centering
+		\includegraphics[width=1\textwidth]{note.png} 
+		\caption{Calculation of capacitance.}
+		\label{fig:my_image}
+	\end{figure}
+	\newpage we added 2200$\mu$F capacitor in parallel to 100$\mu$F so the total becomes 2300 then connecting the usb to the phone the phone started getting charged
+	\newpage \begin{figure}[htbp]
+		\centering
+		\includegraphics[width=1\textwidth]{Transformer_input.png} 
+		\caption{Transformer Input}
+		\label{fig:my_image1}
+	\end{figure}
+	\newpage \begin{figure}[htbp]
+		\centering
+		\includegraphics[width=1\textwidth]{Transformer_output.png} 
+		\caption{Transformer Output}
+		\label{fig:my_image2}
+	\end{figure}
+	\newpage \begin{figure}[htbp]
+		\centering
+		\includegraphics[width=1\textwidth]{Output.png}
+		\caption{Transformer Input}
+		\label{fig:my_image3}
+	\end{figure}
+	\end{document}
+	
+	
+

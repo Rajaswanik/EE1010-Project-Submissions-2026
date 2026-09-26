@@ -1,0 +1,5 @@
+References we used for the Project
+1.Gemini and chat gpt was used for documentation and trouble shooting  throughout the project
+2.found this youtube video on filter capacitor https://youtu.be/p3JfH6zO_Qs?si=8u2plInz1usPoYb6
+3.https://youtu.be/9cqs3oTzpac?si=xvjuiTC1EmAYF7Z- this video is used for learning freecad
+4.Used tinkered AI for simulating the circuit befor building
