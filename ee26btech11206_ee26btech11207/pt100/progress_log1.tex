@@ -1,0 +1,237 @@
+\documentclass[12pt, a4paper]{article}
+
+% Core Packages
+\usepackage[utf8]{inputenc}       % Character encoding
+\usepackage[margin=1in]{geometry}  % Page margins
+\usepackage{amsmath, amssymb}     % Advanced math features
+\usepackage{graphicx}             % Inserting images
+\usepackage{hyperref}             % Hyperlinks and PDF metadata
+
+% Document Metadata
+\title{Progress Log:PT100}
+\author{B.Tarun Tej , B.Rajaswanik}
+\date{10-10-2026}
+
+\begin{document}
+	\maketitle 
+	\author{}
+	
+	\subsection{10-10-2026}
+	we learned about the circuit and we tested basic voltage divider circuit in the bread board we used the same circuit as in the sirs github repo we used 120 ohms in-place of 100 ohms. but the circuit wasnt working for some reason, then we found that the breadboards power rail is not working.
+	\subsection{11-10-2026}
+	we then rebuilt the whole ciircuit in an another breadboard , we got 20$\deg$C instead of 34$\deg$C 
+	Then we learned about Pt100 Least squares method
+	\subsubsection{PT100}
+	A \textbf{Pt100} is a specific type of \textbf{Resistance Temperature Detector (RTD)}—a sensor used to measure temperature accurately across a wide range (typically from $-200^\circ\text{C}$ to $+850^\circ\text{C}$).
+	
+	The name breaks down into its fundamental definition:
+	\begin{itemize}
+		\item \textbf{Pt}: Platinum, the noble metal used for the sensing element.
+		\item \textbf{100}: The sensor has an electrical resistance of \textbf{$100\,\Omega$ at $0^\circ\text{C}$}.
+	\end{itemize}
+	
+	\section*{Working Principle}
+	
+	The Pt100 operates on the principle that the electrical resistance of metals increases as their temperature rises—a property known as a \textbf{Positive Temperature Coefficient (PTC)}.
+	
+	\begin{enumerate}
+		\item \textbf{Atomic Vibration \& Resistance}: When temperature increases, the platinum atoms inside the sensor vibrate more intensely. These lattice vibrations obstruct the flow of electrons, causing electrical resistance to increase.
+		\item \textbf{Predictable Change}: Platinum is selected because its resistance-to-temperature relationship is extremely stable, highly repeatable, and nearly linear over a broad range.
+		\item \textbf{Standardized Coefficient}: For a standard Pt100 sensor (per IEC 60751), the resistance increases by roughly $0.385\,\Omega$ for every $1^\circ\text{C}$ increase in temperature.
+	\end{enumerate}
+	
+	\subsection*{Example Temperature-to-Resistance Values}
+	\begin{itemize}
+		\item $-50^\circ\text{C} \approx 80.31\,\Omega$
+		\item $0^\circ\text{C} = \mathbf{100.00\,\Omega}$
+		\item $100^\circ\text{C} \approx 138.51\,\Omega$
+		\item $200^\circ\text{C} \approx 175.86\,\Omega$
+	\end{itemize}
+	
+	\section*{How the Measurement Is Made}
+	
+	Because the sensor itself only changes its electrical resistance, a controller or signal conditioner determines the temperature using the following process:
+	
+	\begin{enumerate}
+		\item \textbf{Excitation}: A small, constant excitation current $I$ (typically $\le 1\,\text{mA}$ to prevent self-heating errors) is passed through the Pt100 element.
+		\item \textbf{Voltage Measurement}: The voltage drop $V$ across the sensor is measured using Ohm's Law:
+		\[
+		V = I \cdot R
+		\]
+		\item \textbf{Conversion}: The controller calculates resistance:
+		\[
+		R = \frac{V}{I}
+		\]
+		It then converts this calculated resistance $R$ directly into a temperature value using standard calibration equations (such as the Callendar--Van Dusen equation) or lookup tables.
+	\end{enumerate}
+	
+	\section*{Connection Configurations}
+	
+	Standard lead wires introduce parasitic resistance. To mitigate measurement errors, different wiring setups are used:
+	
+	
+	
+	\subsubsection{Least Squares approximation}
+	Least squares approximation in a PT100 temperature sensor project is a mathematical method used to calibrate the sensor and convert raw analog readings into accurate temperature values.
+	
+	A PT100 sensor changes its electrical resistance based on temperature. Microcontrollers read this as a changing voltage or digital count from an analog to digital converter. Due to hardware tolerances, wire resistance, and slight non linear sensor behavior, the raw readings do not perfectly align with ideal temperature values.
+	
+	By collecting a set of known reference temperatures and their corresponding raw sensor readings, the least squares method calculates the best fitting linear or polynomial equation. It does this by minimizing the sum of the squared errors between the measured data points and the calculated trendline.
+	
+	This resulting equation provides precise calibration coefficients specific to the hardware setup. Incorporating this optimized equation into the microcontroller firmware allows the system to convert raw sensor measurements into precise temperature readings efficiently with minimal computational effort.
+	\subsection{12-09-2026} we started soldering the circuit on the perfboard have donr the soldering very slowly so it took us an whole day excluding classes te the soldering part
+	\subsection{13-09-2026}
+	WE learned about the code and its working
+	\section*{1. System Overview \& Hardware Connections}
+	
+	The PT100 RTD sensor is connected in a voltage divider configuration with a $100\,\Omega$ resistor ($R_1$) to measure analog voltage on pin A0 of the Arduino UNO[cite: 1, 2]. The temperature output is displayed on a $16 \times 2$ character LCD operating in 4-bit mode[cite: 1].
+	
+	\noindent\texttt{\#include <LiquidCrystal.h>}\\
+	Includes the LiquidCrystal library, which provides functions to control character LCD modules.
+	\\[6pt]
+	
+	\noindent\texttt{const int RS\_PIN = 7;}\\
+	\texttt{const int EN\_PIN = 6;}\\
+	\texttt{const int DB4\_PIN = 5;}\\
+	\texttt{const int DB5\_PIN = 4;}\\
+	\texttt{const int DB6\_PIN = 3;}\\
+	\texttt{const int DB7\_PIN = 2;}\\
+	Defines the Arduino digital pins connected to the LCD control and data lines (RS to pin 7, Enable to pin 6, and DB4 through DB7 to pins 5, 4, 3, and 2)[cite: 1].
+	\\[6pt]
+	
+	\noindent\texttt{LiquidCrystal lcd(RS\_PIN, EN\_PIN, DB4\_PIN, DB5\_PIN, DB6\_PIN, DB7\_PIN);}\\
+	Creates the LCD controller object named \texttt{lcd} using the assigned digital pins[cite: 1].
+	\\[6pt]
+	
+	\noindent\texttt{const int SENSOR\_PIN = A0;}\\
+	Sets analog input pin A0 (Arduino physical pin 9) as the sensor reading pin connected to the voltage divider output node[cite: 1, 2].
+	\\[6pt]
+	
+	\noindent\texttt{const float R1 = 100.0;}\\
+	Sets the reference resistor R1 value to 100.0 ohms[cite: 2].
+	\\[6pt]
+	
+	\noindent\texttt{const int N = 6;}\\
+	Defines the total number of calibration data points as 6.
+	\\[6pt]
+	
+	\noindent\texttt{const float R\_data[N] = \{100.00, 107.79, 115.54, 123.24, 130.89, 138.51\};}\\
+	Creates an array storing standard PT100 resistance values in ohms corresponding to known reference temperatures.
+	\\[6pt]
+	
+	\noindent\texttt{const float T\_data[N] = \{0.0, 20.0, 40.0, 60.0, 80.0, 100.0\};}\\
+	Creates an array storing the corresponding known temperatures in degrees Celsius.
+	\\[6pt]
+	
+	\noindent\texttt{float slope\_m = 0.0;}\\
+	\texttt{float intercept\_c = 0.0;}\\
+	Declares global variables to store the calculated slope ($m$) and y-intercept ($c$) of the fitted line.
+	\\[6pt]
+	
+	\noindent\texttt{void calculateLeastSquares(const float x[], const float y[], int n, float \&m, float \&c) \{}\\
+	Declares the function that performs Ordinary Least Squares regression, taking input arrays $x$ and $y$, array length $n$, and outputting slope $m$ and intercept $c$ by reference.
+	\\[6pt]
+	
+	\noindent\texttt{float sum\_x = 0.0, sum\_y = 0.0, sum\_xy = 0.0, sum\_x2 = 0.0;}\\
+	Initializes variables to accumulate the sum of $x$, sum of $y$, sum of $x \cdot y$ products, and sum of $x^2$.
+	\\[6pt]
+	
+	\noindent\texttt{for (int i = 0; i $<$ n; i++) \{}\\
+	\hspace*{1em}\texttt{sum\_x += x[i];}\\
+	\hspace*{1em}\texttt{sum\_y += y[i];}\\
+	\hspace*{1em}\texttt{sum\_xy += x[i] * y[i];}\\
+	\hspace*{1em}\texttt{sum\_x2 += x[i] * x[i];}\\
+	\texttt{\}}\\
+	Iterates through all calibration points to calculate total sums needed for linear regression.
+	\\[6pt]
+	
+	\noindent\texttt{m = (n * sum\_xy - sum\_x * sum\_y) / (n * sum\_x2 - sum\_x * sum\_x);}\\
+	Calculates the optimal line slope $m$ using the Ordinary Least Squares formula.
+	\\[6pt]
+	
+	\noindent\texttt{c = (sum\_y - m * sum\_x) / n;}\\
+	Calculates the y-intercept $c$ using the derived slope and mean value differences.
+	\\[6pt]
+	
+	\noindent\texttt{\}}\\
+	Ends the \texttt{calculateLeastSquares} function definition.
+	\\[6pt]
+	
+	\noindent\texttt{void setup() \{}\\
+	Begins the setup configuration routine that runs once at power up.
+	\\[6pt]
+	
+	\noindent\texttt{lcd.begin(16, 2);}\\
+	Initializes the LCD screen hardware to operate with 16 columns and 2 rows.
+	\\[6pt]
+	
+	\noindent\texttt{calculateLeastSquares(R\_data, T\_data, N, slope\_m, intercept\_c);}\\
+	Calls the Least Squares function on startup to compute \texttt{slope\_m} and \texttt{intercept\_c} from the reference dataset.
+	\\[6pt]
+	
+	\noindent\texttt{lcd.print("PT100 Calibrated");}\\
+	\texttt{lcd.setCursor(0, 1);}\\
+	\texttt{lcd.print("Least Squares OK");}\\
+	\texttt{delay(1500);}\\
+	\texttt{lcd.clear();}\\
+	Displays calibration confirmation text on the LCD screen for 1.5 seconds, then clears the display screen.
+	\\[6pt]
+	
+	\noindent\texttt{\}}\\
+	Ends the \texttt{setup} function.
+	\\[6pt]
+	
+	\noindent\texttt{void loop() \{}\\
+	Begins the main execution loop that runs continuously.
+	\\[6pt]
+	
+	\noindent\texttt{int adcValue = analogRead(SENSOR\_PIN);}\\
+	Reads the raw 10-bit analog-to-digital converter value (ranging from 0 to 1023) at pin A0[cite: 1, 2].
+	\\[6pt]
+	
+	\noindent\texttt{if (adcValue $>$ 0 \&\& adcValue $<$ 1023) \{}\\
+	Validates that the ADC reading is within a realistic open/short circuit range to prevent division-by-zero errors.
+	\\[6pt]
+	
+	\noindent\texttt{float R\_pt100 = R1 * ((1023.0 / (float)adcValue) - 1.0);}\\
+	Calculates the PT100 sensor resistance in ohms by rearranging the voltage divider circuit equation[cite: 1, 2].
+	\\[6pt]
+	
+	\noindent\texttt{float temperature = (slope\_m * R\_pt100) + intercept\_c;}\\
+	Calculates temperature in degrees Celsius using the calibrated linear equation $T = m \cdot R + c$.
+	\\[6pt]
+	
+	\noindent\texttt{lcd.setCursor(0, 0);}\\
+	\texttt{lcd.print("R: ");}\\
+	\texttt{lcd.print(R\_pt100, 2);}\\
+	\texttt{lcd.print(" Ohm   ");}\\
+	Positions the display cursor at row 1, column 1, and prints the measured PT100 resistance formatted to 2 decimal places.
+	\\[6pt]
+	
+	\noindent\texttt{lcd.setCursor(0, 1);}\\
+	\texttt{lcd.print("Temp: ");}\\
+	\texttt{lcd.print(temperature, 2);}\\
+	\texttt{lcd.print(" ");}\\
+	\texttt{lcd.write(223);}\\
+	\texttt{lcd.print("C  ");}\\
+	Positions the display cursor at row 2, column 1, prints the computed temperature formatted to 2 decimal places, outputs character 223 for the degree symbol, and appends the letter C.
+	\\[6pt]
+	
+	\noindent\texttt{\} else \{}\\
+	\hspace*{1em}\texttt{lcd.setCursor(0, 0);}\\
+	\hspace*{1em}\texttt{lcd.print("Sensor Error   ");}\\
+	\texttt{\}}\\
+	Displays an error message on line 1 if the sensor circuit reading falls outside expected voltage boundaries.
+	\\[6pt]
+	
+	\noindent\texttt{delay(500);}\\
+	Pauses execution for 500 milliseconds before taking the next sensor reading.
+	\\[6pt]
+	
+	\noindent\texttt{\}}\\
+	Ends the main loop function.
+	\subsection{14-09-2026} we took measurements and started designing the 3d module and started the decade counter project
+	\subsection{15-09-2026}we completed the 3d module designing
+	
+	
+\end{document}

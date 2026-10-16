@@ -1,0 +1,4 @@
+References Used for this project
+1.we used gemini and claude ai for building the circuit and for writing the code
+2.we used youtube tuotirials for 3d printing
+3.We used Gemini AI for Code
