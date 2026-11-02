@@ -1,0 +1,3 @@
+References Used for this project:UGV
+1.we used gemini and claude ai and the github repo provided for building the circuit and for writing the code
+2.We used Gemini AI for Code
